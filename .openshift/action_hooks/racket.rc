@@ -5,11 +5,11 @@
 #set -x
 
 # Read configuration variable file if it is present
-#loads Racket VERSION, INIT_FILE, LOG_FILE, RACKET_COMMAND
+#loads Racket RACKET_VERSION, INIT_FILE, LOG_FILE, RACKET_COMMAND
 CONFIG=${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_config
 [ -r $CONFIG ] && . $CONFIG
 
-RACKET_HOME=${OPENSHIFT_DATA_DIR}racket-${VERSION}
+RACKET_HOME=${OPENSHIFT_DATA_DIR}racket-${RACKET_VERSION}
 
 DESC="Racket Launch Script"
 NAME=${RACKET_HOME}/bin/racket

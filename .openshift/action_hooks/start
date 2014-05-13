@@ -3,7 +3,7 @@
 # script. The application will work only if it binds to
 # $OPENSHIFT_DIY_IP:8080
 
-#loads Racket VERSION, INIT_FILE, LOG_FILE, RACKET_COMMAND
+#loads Racket RACKET_VERSION, INIT_FILE, LOG_FILE, RACKET_COMMAND
 . ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_config
 
 if [[ ! $? -eq 0 ]]; then

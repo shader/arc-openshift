@@ -12,17 +12,17 @@ echo "${OPENSHIFT_REPO_DIR}"
 echo "${OPENSHIFT_TMP_DIR}"
 echo "${OPENSHIFT_DIY_LOG_DIR}"
 
-#loads Racket VERSION, INIT_FILE, LOG_FILE, RACKET_COMMAND
+#loads Racket RACKET_VERSION, INIT_FILE, LOG_FILE, RACKET_COMMAND
 . ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_config
 
 if [[ ! $? -eq 0 ]]; then
     exit $?
 fi
 # Racket will be installed here.
-RACKET_HOME="${OPENSHIFT_DATA_DIR}racket-${VERSION}"
+RACKET_HOME="${OPENSHIFT_DATA_DIR}racket-${RACKET_VERSION}"
 
 # use tmp dir to download and install just in case it hangs up
-RACKET_ARCH="${OPENSHIFT_TMP_DIR}racket-$VERSION.sh"
+RACKET_ARCH="${OPENSHIFT_TMP_DIR}racket-$RACKET_VERSION.sh"
 
 # cleanup a failed partial installation
 if [[ -d "${OPENSHIFT_TMP_DIR}racket" ]]; then
@@ -30,10 +30,10 @@ if [[ -d "${OPENSHIFT_TMP_DIR}racket" ]]; then
 fi
 
 if [[ -d $RACKET_HOME ]]; then
-    echo "Racket $VERSION is installed at ${RACKET_HOME}"
+    echo "Racket $RACKET_VERSION is installed at ${RACKET_HOME}"
 else
 
-    echo "Installing Racket $VERSION"
+    echo "Installing Racket $RACKET_VERSION"
 
     echo "Removing $RACKET_ARCH and performing fresh download from racket-lang.org"
     if [[ -f $RACKET_ARCH ]]; then
@@ -41,11 +41,11 @@ else
     fi
 
     # Fetch installer
-    RACKET_URL="http://mirror.racket-lang.org/installers/$VERSION/racket-$VERSION-x86_64-linux-debian-squeeze.sh"
+    RACKET_URL="http://mirror.racket-lang.org/installers/$RACKET_VERSION/racket-$RACKET_VERSION-x86_64-linux-debian-squeeze.sh"
     curl -o $RACKET_ARCH $RACKET_URL
     
     if [[ ! -f $RACKET_ARCH ]]; then
-	echo "Error downloading Racket $VERSION from $RACKET_URL"
+	echo "Error downloading Racket $RACKET_VERSION from $RACKET_URL"
 	exit 1
     fi
     
@@ -66,14 +66,14 @@ EOF
     fi
 
     if [[ ! -d "${RACKET_HOME}" ]]; then
-	echo "Error installing Racket $VERSION to $RACKET_HOME"
+	echo "Error installing Racket $RACKET_VERSION to $RACKET_HOME"
 	exit 1
     fi
 
     echo "Attempting to run ${RACKET_HOME}/bin/racket to verify install." 
     # verify that the desired version installed successfully
-    if [[ ! `${RACKET_HOME}/bin/racket -v | tail -1` = "Welcome to Racket v${VERSION}." ]]; then
-	echo "Error installing Racket $VERSION to $RACKET_HOME.  Cleaning up from install."
+    if [[ ! `${RACKET_HOME}/bin/racket -v | tail -1` = "Welcome to Racket v${RACKET_VERSION}." ]]; then
+	echo "Error installing Racket $RACKET_VERSION to $RACKET_HOME.  Cleaning up from install."
 	rm -rf $RACKET_HOME
 	exit 1
     fi
@@ -84,7 +84,7 @@ EOF
     for old in [racket-]*; do
     # avoid showing "Removing version [racket-]*" message
 	if [[ -d $old ]]; then
-	    if [[ $old = "racket-$VERSION" ]]; then
+	    if [[ $old = "racket-$RACKET_VERSION" ]]; then
 		echo "Skipping cleaning of current installed version $old"
 	    else
 		echo "Removing version $old"
@@ -94,5 +94,14 @@ EOF
     done
 
 fi # end of installation block
+
+ARC_HOME="${OPENSHIFT_DATA_DIR}arc"
+ARC_REPO="https://github.com/arclanguage/anarki.git"
+if [[ -d $ARC_HOME ]]; then
+    echo "Arc is installed at ${ARC_HOME}"
+else
+    echo "Installing Arc in ${ARC_HOME}"
+    git clone ${ARC_REPO} ${ARC_HOME}
+fi
 
 exit 0
