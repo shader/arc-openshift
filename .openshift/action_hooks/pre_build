@@ -18,7 +18,6 @@ echo "${OPENSHIFT_DIY_LOG_DIR}"
 if [[ ! $? -eq 0 ]]; then
     exit $?
 fi
-
 # Racket will be installed here.
 RACKET_HOME="${OPENSHIFT_DATA_DIR}racket-${VERSION}"
 
@@ -42,7 +41,7 @@ else
     fi
 
     # Fetch installer
-    RACKET_URL="http://download.racket-lang.org/installers/$VERSION/racket/racket-$VERSION-bin-x86_64-linux-f14.sh"
+    RACKET_URL="http://mirror.racket-lang.org/installers/$VERSION/racket-$VERSION-x86_64-linux-debian-squeeze.sh"
     curl -o $RACKET_ARCH $RACKET_URL
     
     if [[ ! -f $RACKET_ARCH ]]; then
