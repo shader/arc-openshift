@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Launch the web server.
+# We don't use the out-of-box plt-web-server script because it doesn't
+# disconnect when run, i.e., nohup.
+
+CMD="${1}/bin/racket"
+WSARG="-I scheme/init -l web-server/main.rkt"
+shift
+ARGS=$@
+nohup ${CMD} ${WSARG} ${ARGS} &
+echo $! >> /tmp/racket.pid

@@ -1,0 +1,99 @@
+#!/bin/bash
+# This is a simple script and will be executed on your CI system if 
+# available.  Otherwise it will execute while your application is stopped
+# before the build step.  This script gets executed directly, so it
+# could be python, php, ruby, etc.
+
+# debug
+# set -x
+
+echo "${OPENSHIFT_DATA_DIR}"
+echo "${OPENSHIFT_REPO_DIR}"
+echo "${OPENSHIFT_TMP_DIR}"
+echo "${OPENSHIFT_DIY_LOG_DIR}"
+
+#loads Racket VERSION, INIT_FILE, LOG_FILE, RACKET_COMMAND
+. ${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_config
+
+if [[ ! $? -eq 0 ]]; then
+    exit $?
+fi
+
+# Racket will be installed here.
+RACKET_HOME="${OPENSHIFT_DATA_DIR}racket-${VERSION}"
+
+# use tmp dir to download and install just in case it hangs up
+RACKET_ARCH="${OPENSHIFT_TMP_DIR}racket-$VERSION.sh"
+
+# cleanup a failed partial installation
+if [[ -d "${OPENSHIFT_TMP_DIR}racket" ]]; then
+    rm -rf "${OPENSHIFT_TMP_DIR}racket"
+fi
+
+if [[ -d $RACKET_HOME ]]; then
+    echo "Racket $VERSION is installed at ${RACKET_HOME}"
+else
+
+    echo "Installing Racket $VERSION"
+
+    echo "Removing $RACKET_ARCH and performing fresh download from racket-lang.org"
+    if [[ -f $RACKET_ARCH ]]; then
+     	rm $RACKET_ARCH
+    fi
+
+    # Fetch installer
+    RACKET_URL="http://download.racket-lang.org/installers/$VERSION/racket/racket-$VERSION-bin-x86_64-linux-f14.sh"
+    curl -o $RACKET_ARCH $RACKET_URL
+    
+    if [[ ! -f $RACKET_ARCH ]]; then
+	echo "Error downloading Racket $VERSION from $RACKET_URL"
+	exit 1
+    fi
+    
+    echo "Running Racket installer"
+    pushd $OPENSHIFT_TMP_DIR
+    chmod u+rx "$RACKET_ARCH"
+    "$RACKET_ARCH" <<EOF
+no
+4
+
+EOF
+    popd
+
+    # rm $RACKET_ARCH
+    if [[ -d "${OPENSHIFT_TMP_DIR}racket" ]]; then
+	echo "Moving Racket in installation location ${RACKET_HOME}"
+	mv "${OPENSHIFT_TMP_DIR}racket" "${RACKET_HOME}"
+    fi
+
+    if [[ ! -d "${RACKET_HOME}" ]]; then
+	echo "Error installing Racket $VERSION to $RACKET_HOME"
+	exit 1
+    fi
+
+    echo "Attempting to run ${RACKET_HOME}/bin/racket to verify install." 
+    # verify that the desired version installed successfully
+    if [[ ! `${RACKET_HOME}/bin/racket -v | tail -1` = "Welcome to Racket v${VERSION}." ]]; then
+	echo "Error installing Racket $VERSION to $RACKET_HOME.  Cleaning up from install."
+	rm -rf $RACKET_HOME
+	exit 1
+    fi
+
+    #cleanup, remove other Racket versions
+    pushd "${OPENSHIFT_DATA_DIR}"
+    echo "Cleaning up old versions of Racket"
+    for old in [racket-]*; do
+    # avoid showing "Removing version [racket-]*" message
+	if [[ -d $old ]]; then
+	    if [[ $old = "racket-$VERSION" ]]; then
+		echo "Skipping cleaning of current installed version $old"
+	    else
+		echo "Removing version $old"
+		rm -fr $old
+	    fi
+	fi
+    done
+
+fi # end of installation block
+
+exit 0
