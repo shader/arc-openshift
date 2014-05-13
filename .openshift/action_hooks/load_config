@@ -13,7 +13,7 @@
 # BEGIN Configure                      #
 ########################################
 # Racket Version to download and install
-VERSION="5.2.1"
+VERSION="6.0.1"
 RACKET_LAUNCH_PARAMS=""
 ########################################
 # END Configure                        #
@@ -41,8 +41,8 @@ if [ -z $OPENSHIFT_DIY_LOG_DIR ]; then
 fi
 
 # validate version
-if [ "$VERSION" \< "5.2.1" ]; then
-    echo "Error: version $VERSION not supported, use version 5.2.1 or higher"
+if [ "$VERSION" \< "6.0.1" ]; then
+    echo "Error: version $VERSION not supported, use version 6.0.1 or higher"
     return 1
 fi
 
