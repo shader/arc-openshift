@@ -9,7 +9,7 @@ Follow these instructions to install it, based on RayRacine's code at github.com
   * and http://test-\<namespace>.rhcloud.com
 1. Clone your OpenShift repo on your laptop or whatever in say /code
   * cd /code
-  * git clone ssh://\<long number here>@test-<namespace>.rhcloud.com/~/git/test.git/
+  * git clone ssh://\<long number here>@test-\<namespace>.rhcloud.com/~/git/test.git/
   * cd /code/test
   * Now in your locally cloned repo.
 1. Add my repository with the scripts.
