@@ -5,8 +5,8 @@ Follow these instructions to install it, based on RayRacine's code at github.com
 1. Create an account on OpenShift.
 1. Use their console to create an application, say named "test".
   * The console shows you that you have a git repo, and a URL for your app.
-  * e.g., git clone ssh://\<long number here>@test-<namespace>.rhcloud.com/~/git/test.git/ 
-  * and http://test-<namespace>.rhcloud.com
+  * e.g., git clone ssh://\<long number here>@test-\<namespace>.rhcloud.com/~/git/test.git/ 
+  * and http://test-\<namespace>.rhcloud.com
 1. Clone your OpenShift repo on your laptop or whatever in say /code
   * cd /code
   * git clone ssh://\<long number here>@test-<namespace>.rhcloud.com/~/git/test.git/
