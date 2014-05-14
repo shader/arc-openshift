@@ -22,7 +22,7 @@ do_start()
 {
     CMD=${RACKET_HOME}/bin/racket
     WSARG="-f ${ARC_HOME}/as.scm ${OPENSHIFT_REPO_DIR}diy/main.arc"
-    echo ${CMD} ${WSARG} ${DAEMON_ARGS} > /dev/null 2>${OPENSHIFT_DIY_LOG_DIR}/launch_errors.log &
+    nohup ${CMD} ${WSARG} ${DAEMON_ARGS} > /dev/null 2>${OPENSHIFT_DIY_LOG_DIR}/launch_errors.log &
     echo $! >> ${PIDFILE}
 }
 

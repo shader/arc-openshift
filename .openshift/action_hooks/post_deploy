@@ -3,4 +3,4 @@
 # is deployed and started.  This script gets executed directly, so 
 # it could be python, php, ruby, etc.
 
-ps ax | grep arc
+ps ax | grep racket | grep arc
