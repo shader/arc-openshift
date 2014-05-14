@@ -18,8 +18,6 @@ echo "${OPENSHIFT_DIY_LOG_DIR}"
 if [[ ! $? -eq 0 ]]; then
     exit $?
 fi
-# Racket will be installed here.
-RACKET_HOME="${OPENSHIFT_DATA_DIR}racket-${RACKET_VERSION}"
 
 # use tmp dir to download and install just in case it hangs up
 RACKET_ARCH="${OPENSHIFT_TMP_DIR}racket-$RACKET_VERSION.sh"
@@ -95,7 +93,6 @@ EOF
 
 fi # end of installation block
 
-ARC_HOME="${OPENSHIFT_DATA_DIR}arc"
 ARC_REPO="https://github.com/arclanguage/anarki.git"
 if [[ -d $ARC_HOME ]]; then
     echo "Arc is installed at ${ARC_HOME}"

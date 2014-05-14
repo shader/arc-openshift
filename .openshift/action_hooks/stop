@@ -8,4 +8,4 @@ if [[ ! $? -eq 0 ]]; then
     exit $?
 fi
 
-${OPENSHIFT_REPO_DIR}.openshift/action_hooks/racket.rc stop
+${OPENSHIFT_REPO_DIR}.openshift/action_hooks/arc.rc stop

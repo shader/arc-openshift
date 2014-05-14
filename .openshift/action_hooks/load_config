@@ -48,4 +48,10 @@ fi
 
 LOG_FILE="${OPENSHIFT_DIY_LOG_DIR}system.out"
 
+#racket will be installed here
+RACKET_HOME="${OPENSHIFT_DATA_DIR}racket-${RACKET_VERSION}"
+
+#arc will be installed here
+ARC_HOME="${OPENSHIFT_DATA_DIR}arc"
+
 return 0

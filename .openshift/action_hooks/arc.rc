@@ -1,6 +1,5 @@
 #! /bin/sh
 
-# Author: Ray Racine <ray.racine@gmail.com>
 # Do NOT "set -e"
 #set -x
 
@@ -9,12 +8,11 @@
 CONFIG=${OPENSHIFT_REPO_DIR}.openshift/action_hooks/load_config
 [ -r $CONFIG ] && . $CONFIG
 
-DESC="Racket Launch Script"
-NAME=${RACKET_HOME}/bin/racket
-#DAEMON=${RACKET_HOME}/bin/racket
+DESC="Arc Launch Script"
+NAME=arc
 DAEMON=${OPENSHIFT_REPO_DIR}.openshift/action_hooks/webserver.rc
-DAEMON_ARGS="-a ${OPENSHIFT_INTERNAL_IP} -p 8080"
-PIDFILE=${OPENSHIFT_TMP_DIR}racket.pid
+DAEMON_ARGS=""
+PIDFILE=${OPENSHIFT_TMP_DIR}arc.pid
 SCRIPTNAME=${OPENSHIFT_REPO_DIR}${NAME}
 
 # Exit if the package is not installed
@@ -22,9 +20,9 @@ SCRIPTNAME=${OPENSHIFT_REPO_DIR}${NAME}
 
 do_start()
 {
-    CMD=$NAME
-    WSARG="-I scheme/init -l- web-server/main.rkt"
-    nohup ${CMD} ${WSARG} ${DAEMON_ARGS} > /dev/null 2>${OPENSHIFT_DIY_LOG_DIR}/racket_launch_errors.log &
+    CMD=${RACKET_HOME}/bin/racket -f ${ARC_HOME}/as.scm
+    WSARG="${OPENSHIFT_REPO_DIR}main.arc"
+    nohup ${CMD} ${WSARG} ${DAEMON_ARGS} > /dev/null 2>${OPENSHIFT_DIY_LOG_DIR}/launch_errors.log &
     echo $! >> ${PIDFILE}
 }
 
@@ -101,7 +99,6 @@ case "$1" in
 	esac
 	;;
   *)
-	#echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
 	echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
 	exit 3
 	;;
