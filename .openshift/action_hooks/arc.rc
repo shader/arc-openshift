@@ -20,8 +20,8 @@ SCRIPTNAME=${OPENSHIFT_REPO_DIR}${NAME}
 
 do_start()
 {
-    CMD=${RACKET_HOME}/bin/racket -f ${ARC_HOME}/as.scm
-    WSARG="${OPENSHIFT_REPO_DIR}main.arc"
+    CMD=${RACKET_HOME}/bin/racket
+    WSARG="-f ${ARC_HOME}/as.scm ${OPENSHIFT_REPO_DIR}main.arc"
     nohup ${CMD} ${WSARG} ${DAEMON_ARGS} > /dev/null 2>${OPENSHIFT_DIY_LOG_DIR}/launch_errors.log &
     echo $! >> ${PIDFILE}
 }
