@@ -13,7 +13,7 @@ Follow these instructions to install it, based on RayRacine's code at github.com
   * cd /code/test
   * Now in your locally cloned repo.
 1. Add my repository with the scripts.
-  * git remote add rackos git://github.com/shader/arc-openshift.git
+  * git remote add arc-openshift git://github.com/shader/arc-openshift.git
 1. Fetch it down and merge it.
   * git fetch arc-openshift
   * git merge --ff arc-openshift/master
