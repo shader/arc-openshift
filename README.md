@@ -26,4 +26,8 @@ Follow these instructions to install it, based on RayRacine's code at github.com
 
 ## Next Steps.
 
-Edit your code locally.  Test run it locally or don't.  When ready, commit and push it OpenShift and the scripts will automatically stop/start the server with the new changes.
+For convenience, you can add racket to your path via:
+
+  export PATH=$PATH:${OPENSHIFT_DATA_DIR}racket-6.0.1/bin
+
+Edit your code locally.  Test run it locally or don't.  When ready, commit and push it to OpenShift and the scripts will automatically stop/start the server with the new changes.

@@ -14,14 +14,14 @@ DAEMON=${OPENSHIFT_REPO_DIR}.openshift/action_hooks/webserver.rc
 DAEMON_ARGS=""
 PIDFILE=${OPENSHIFT_TMP_DIR}arc.pid
 SCRIPTNAME=${OPENSHIFT_REPO_DIR}${NAME}
-CMD=${RACKET_HOME}/bin/racket
+CMD="${ARC_HOME}/arc"
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
 
 do_start()
 {
-    WSARG="-f ${ARC_HOME}/as.scm ${OPENSHIFT_REPO_DIR}/main.arc"
+    WSARG="${OPENSHIFT_REPO_DIR}/main.arc"
     nohup ${CMD} ${WSARG} ${DAEMON_ARGS} >/dev/null 2>${OPENSHIFT_DIY_LOG_DIR}/launch_errors.log &
     echo $! >> ${PIDFILE}
 }
